@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
+        <script src="js/FST-APP.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <nav>
+            
+            <input type="text" name="fila" placeholder="Filas" > 
+            
+            <input type="text" name="columna" placeholder="Columnas" >
+            <button class="gmatriz">Generar Matriz</button>
+        </nav>
+        <button class="ac1">Operaciones</button>
+        <section class="ca1">
+            <button class="smtx">Suma</button>
+            <button class="mmtx">Multiplicacion</button>
+        </section>
+        <script>
+            var nmatrices = 0;
+            var filas = [];
+            var columnas = [];
+            $(document).ready(function ()
+            {
+                var app = new doc("ac", "ca");
+                app.main();
+                $(".ac1").hide();
+                $(".gmatriz").click(function ()
+                {
+                    var f = Number($("input[name='fila']").val());
+                    var c = Number($("input[name='columna']").val());
+                    filas.push(f);
+                    columnas.push(c);
+                    if (!isReady(".matriz") && f > 0 && c > 0 && nmatrices < 2) {
+                        $("body").append("<br><br><div class='matriz" + nmatrices + "'></div>");
+                        if (nmatrices > 0)
+                            $(".ac1").fadeIn();
+                        if (nmatrices === 1) {
+                            $("nav").hide();
+                            if (!(filas[0] === filas[1] && columnas[0] === columnas[1]))
+                            {
+                                $(".smtx").hide();
+                                $("body").prepend("Las matrices no se pueden sumar!<br><br>");
+                            }
+                            if (!(columnas[0] === filas[1]) && ((filas[0] !== 1 && columnas[0] !== 1) && (filas[1] !== 1 && columnas[1] !== 1)))
+                            {
+                                $(".mmtx").hide();
+                                $("body").prepend("Las matrices no se pueden multiplicar!<br><br>");
+                            }
+                        }
+                        for (var i = 1; i <= f; i++)
+                        {
+
+                            for (var j = 1; j <= c; j++)
+                            {
+                                $(".matriz" + nmatrices + "").append("<input type='text' name='" + nmatrices + "mtx" + i + "_" + j + "' placeholder='" + i + "_" + j + "'>");
+                                if (j === c)
+                                    $(".matriz" + nmatrices + "").append("<br>");
+                            }
+                        }
+                        nmatrices++;
+                    }
+                });
+                $(".smtx").click(function ()
+                {
+                    $("body").append("Resultados de las suma:<br><br><div class='result'></div>");
+                    for (var i = 1; i <= filas[0]; i++)
+                    {
+
+                        for (var j = 1; j <= columnas[0]; j++)
+                        {
+                            var sum = Number($("input[name='0mtx" + i + "_" + j + "']").val()) + Number($("input[name='1mtx" + i + "_" + j + "']").val());
+                            $(".result").append("<input type='text' name='rmx" + i + "_" + j + "' value='" + sum + "' >");
+                            if (j === columnas[0])
+                                $(".result").append("<br>");
+                        }
+                    }
+                    $(this).hide();
+                });
+
+
+
+            });
+        </script>
+    </body>
+
+</html>
