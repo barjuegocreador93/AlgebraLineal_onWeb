@@ -14,9 +14,9 @@ and open the template in the editor.
     </head>
     <body>
         <nav>
-            
+
             <input type="text" name="fila" placeholder="Filas" > 
-            
+
             <input type="text" name="columna" placeholder="Columnas" >
             <button class="gmatriz">Generar Matriz</button>
         </nav>
@@ -25,6 +25,9 @@ and open the template in the editor.
             <button class="smtx">Suma</button>
             <button class="mmtx">Multiplicacion</button>
         </section>
+        <button class="res">Borrar Todo</button>
+        <article>            
+        </article>
         <script>
             var nmatrices = 0;
             var filas = [];
@@ -41,7 +44,7 @@ and open the template in the editor.
                     filas.push(f);
                     columnas.push(c);
                     if (!isReady(".matriz") && f > 0 && c > 0 && nmatrices < 2) {
-                        $("body").append("<br><br><div class='matriz" + nmatrices + "'></div>");
+                        $("article").append("<br><br><div class='matriz" + nmatrices + "'></div>");
                         if (nmatrices > 0)
                             $(".ac1").fadeIn();
                         if (nmatrices === 1) {
@@ -49,12 +52,12 @@ and open the template in the editor.
                             if (!(filas[0] === filas[1] && columnas[0] === columnas[1]))
                             {
                                 $(".smtx").hide();
-                                $("body").prepend("Las matrices no se pueden sumar!<br><br>");
+                                $("article").prepend("Las matrices no se pueden sumar!<br><br>");
                             }
                             if (!(columnas[0] === filas[1]) && ((filas[0] !== 1 && columnas[0] !== 1) && (filas[1] !== 1 && columnas[1] !== 1)))
                             {
                                 $(".mmtx").hide();
-                                $("body").prepend("Las matrices no se pueden multiplicar!<br><br>");
+                                $("article").prepend("Las matrices no se pueden multiplicar!<br><br>");
                             }
                         }
                         for (var i = 1; i <= f; i++)
@@ -72,23 +75,85 @@ and open the template in the editor.
                 });
                 $(".smtx").click(function ()
                 {
-                    $("body").append("Resultados de las suma:<br><br><div class='result'></div>");
+                    $("article").append("Resultados de las suma:<br><br><div class='resultsum'></div>");
                     for (var i = 1; i <= filas[0]; i++)
                     {
 
                         for (var j = 1; j <= columnas[0]; j++)
                         {
                             var sum = Number($("input[name='0mtx" + i + "_" + j + "']").val()) + Number($("input[name='1mtx" + i + "_" + j + "']").val());
-                            $(".result").append("<input type='text' name='rmx" + i + "_" + j + "' value='" + sum + "' >");
+                            $(".resultsum").append("<input type='text' name='rmx" + i + "_" + j + "' value='" + sum + "' >");
                             if (j === columnas[0])
-                                $(".result").append("<br>");
+                                $(".resultsum").append("<br>");
                         }
                     }
                     $(this).hide();
                 });
+                $(".mmtx").click(function ()
+                {
+                    $("article").append("Resultados de la Multiplicacion:<br><br><div class='resultmul'></div>");
+                    if (columnas[0] === 1 && filas[0] === 1)
+                    {
+                        var c = Number($("input[name='0mtx1_1']").val());
+                        for (var i = 1; i <= filas[1]; i++)
+                        {
 
+                            for (var j = 1; j <= columnas[1]; j++)
+                            {
+                                var mul = c * Number($("input[name='1mtx" + i + "_" + j + "']").val());
+                                $(".resultmul").append("<input type='text' name='rmx" + i + "_" + j + "' value='" + mul + "' >");
+                                if (j === columnas[1])
+                                    $(".resultmul").append("<br>");
+                            }
+                        }
+                    } else if (columnas[1] === 1 && filas[1] === 1)
+                    {
+                        var c = Number($("input[name='1mtx1_1']").val());
+                        for (var i = 1; i <= filas[0]; i++)
+                        {
 
+                            for (var j = 1; j <= columnas[0]; j++)
+                            {
+                                var mul = c * Number($("input[name='0mtx" + i + "_" + j + "']").val());
+                                $(".resultmul").append("<input type='text' name='rmx" + i + "_" + j + "' value='" + mul + "' >");
+                                if (j === columnas[0])
+                                    $(".resultmul").append("<br>");
+                            }
+                        }
+                    }else
+                    {
+                        for(var i=1;i<=filas[0];i++)
+                        {
+                            for(var j=1;j<=columnas[1];j++)
+                            {
+                                var sum=0;
+                                for(var k=1;k<=filas[1];k++)
+                                {
+                                    sum= sum + (Number($("input[name='0mtx" + i + "_" + k + "']").val())*Number($("input[name='1mtx" + k + "_" + j + "']").val()));
+                                }
+                                $(".resultmul").append("<input type='text' name='rmx" + i + "_" + j + "' value='" + sum + "' >");
+                                if (j === columnas[1])
+                                    $(".resultmul").append("<br>");
+                            }
+                        }
+                    }
+                    $(this).hide();
+                });
+                $(".res").click(function ()
+                {
+                    $("article").empty();
+                    $("nav").fadeIn();
+                    $("section *").fadeIn();
+                    $("section").hide();
 
+                    for (var i = 0; i < nmatrices; i++)
+                    {
+                        filas.pop();
+                        columnas.pop();
+                    }
+                    nmatrices = 0;
+                    $(".ac1").hide();
+                });
             });
         </script>
     </body>
