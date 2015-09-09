@@ -54,7 +54,7 @@ and open the template in the editor.
                                 $(".smtx").hide();
                                 $("article").prepend("Las matrices no se pueden sumar!<br><br>");
                             }
-                            if (!(columnas[0] === filas[1]) && ((filas[0] !== 1 && columnas[0] !== 1) && (filas[1] !== 1 && columnas[1] !== 1)))
+                            if (!(columnas[0] === filas[1]) && ((filas[0] !== 1 || columnas[0] !== 1) || (filas[1] !== 1 || columnas[1] !== 1)))
                             {
                                 $(".mmtx").hide();
                                 $("article").prepend("Las matrices no se pueden multiplicar!<br><br>");
